@@ -37,7 +37,7 @@ const geminiAPI = axios.create({
 // Mock responses for virtual AI models
 const mockResponse = async (model, prompt) => {
   const responses = {
-    iegGuangzi: `[IEGGuangzi 虚拟AI回复] 基于您的描述"${prompt}"，我为您生成了相应的游戏素材建议。这是一个模拟回复，展示了AI助手的响应格式。`,
+    lightai: `[lightai 虚拟AI回复] 基于您的描述"${prompt}"，我为您生成了相应的游戏素材建议。这是一个模拟回复，展示了AI助手的响应格式。`,
     hunyuan: `[Hunyuan 虚拟AI回复] 根据您的需求"${prompt}"，我为您提供以下游戏策划建议：\n\n1. 核心玩法设计\n2. 系统架构规划\n3. 用户体验优化\n\n这是混元AI的模拟响应，实际使用时会调用真实API。`,
     deepseek: `[Deepseek 虚拟AI回复] 针对您的描述"${prompt}"，我从技术角度为您分析：\n\n• 技术实现方案\n• 性能优化建议\n• 代码架构设计\n\n这是DeepSeek AI的模拟回复，展示了深度思考的技术建议。`
   };
@@ -239,10 +239,10 @@ export const generateResponse = async (messages, selectedModel = 'qwen') => {
       // 对于素材生成，使用Gemini的图像生成功能
       const lastMessage = messages[messages.length - 1].content;
       return await generateGeminiImage(lastMessage);
-    } else if (selectedModel === 'iegGuangzi') {
-      // iegGuangzi 使用虚拟AI回复（仅用于素材生成页面）
+    } else if (selectedModel === 'lightai') {
+      // lightai 使用虚拟AI回复（仅用于素材生成页面）
       const lastMessage = messages[messages.length - 1].content;
-      const response = await mockResponse('iegGuangzi', lastMessage);
+      const response = await mockResponse('lightai', lastMessage);
       return {
         text: response.text,
         status: 'success'

@@ -11,8 +11,8 @@ const assetsModels = [
     name: 'Qwen'
   },
   {
-    id: 'iegGuangzi',
-    name: 'IEGGuangzi'
+    id: 'lightai',
+    name: 'lightai'
   },
   {
     id: 'gemini',
