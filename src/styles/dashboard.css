@@ -1,0 +1,90 @@
+/* src/styles/dashboard.css */
+
+.dashboard {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.dashboard h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.dashboard p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.global-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.global-navigation button {
+  background-color: #007bff;
+  color: white;
+  font-size: 1.1rem;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.global-navigation button:hover {
+  background-color: #0056b3;
+}
+
+.chat-window {
+  margin-top: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.chat-window h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.chat-records {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.chat-records p {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input input {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.chat-input button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 18%;
+}
+
+.chat-input button:hover {
+  background-color: #0056b3;
+}

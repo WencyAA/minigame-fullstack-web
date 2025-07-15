@@ -1,0 +1,47 @@
+/* 设置页面样式 */
+.settings-page {
+  padding: 40px 0;
+}
+
+.settings-page h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.settings-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  width: 80%;
+}
+
+.settings-form label {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.settings-form select,
+.settings-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.settings-form button {
+  background-color: #007bff;
+  color: white;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.settings-form button:hover {
+  background-color: #0056b3;
+}

@@ -1,0 +1,1473 @@
+Hunyuan API 概览
+混元生文相关接口
+混元生文文件对话相关接口
+混元生文文件相关接口
+混元生图相关接口
+控制台相关接口
+混元生3D相关接口
+混元生文相关接口
+接口名称	接口功能	频率限制（次/秒）
+ChatCompletions	对话	-
+ImageQuestion	拍照解题	20
+GroupChatCompletions	群聊	20
+GetEmbedding	向量化	5
+GetTokenCount	Token 计数	20
+ChatTranslations	翻译	20
+混元生文文件对话相关接口
+接口名称	接口功能	频率限制（次/秒）
+CreateThread	创建会话	20
+RunThread	执行会话	20
+GetThread	查询会话	20
+GetThreadMessageList	会话消息列表	20
+GetThreadMessage	获取会话消息	20
+混元生文文件相关接口
+接口名称	接口功能	频率限制（次/秒）
+FilesUploads	文件上传	20
+FilesList	文件列表	20
+FilesDeletions	文件删除	20
+混元生图相关接口
+接口名称	接口功能	频率限制（次/秒）
+SubmitHunyuanImageJob	提交混元生图任务	-
+QueryHunyuanImageJob	查询混元生图任务	20
+SubmitHunyuanImageChatJob	提交混元生图（多轮对话）任务	-
+QueryHunyuanImageChatJob	查询混元生图（多轮对话）任务	-
+TextToImageLite	文生图轻量版	-
+控制台相关接口
+接口名称	接口功能	频率限制（次/秒）
+ActivateService	开通服务	20
+SetPayMode	设置付费模式	20
+混元生3D相关接口
+接口名称	接口功能	频率限制（次/秒）
+SubmitHunyuanTo3DJob	提交混元生3D任务	-
+QueryHunyuanTo3DJob	查询混元生3D任务	20
+
+
+调用方式：
+请求结构
+最近更新时间：2025-05-21 01:20:36
+
+我的收藏
+本页目录：
+1. 服务地址
+2. 通信协议
+3. 请求方法
+4. 字符编码
+1. 服务地址
+API 支持就近地域接入，本产品就近地域接入域名为 hunyuan.tencentcloudapi.com ，也支持指定地域域名访问，例如广州地域的域名为 hunyuan.ap-guangzhou.tencentcloudapi.com 。
+
+推荐使用就近地域接入域名。根据调用接口时客户端所在位置，会自动解析到最近的某个具体地域的服务器。例如在广州发起请求，会自动解析到广州的服务器，效果和指定 hunyuan.ap-guangzhou.tencentcloudapi.com 是一致的。
+
+注意：对时延敏感的业务，建议指定带地域的域名。
+
+注意：域名是 API 的接入点，并不代表产品或者接口实际提供服务的地域。产品支持的地域列表请在调用方式/公共参数文档中查阅，接口支持的地域请在接口文档输入参数中查阅。
+
+目前支持的域名列表为：
+
+接入地域	域名
+就近地域接入（推荐，只支持非金融区）	hunyuan.tencentcloudapi.com
+华南地区（广州）	hunyuan.ap-guangzhou.tencentcloudapi.com
+华东地区（上海）	hunyuan.ap-shanghai.tencentcloudapi.com
+华东地区（南京）	hunyuan.ap-nanjing.tencentcloudapi.com
+华北地区（北京）	hunyuan.ap-beijing.tencentcloudapi.com
+西南地区（成都）	hunyuan.ap-chengdu.tencentcloudapi.com
+西南地区（重庆）	hunyuan.ap-chongqing.tencentcloudapi.com
+港澳台地区（中国香港）	hunyuan.ap-hongkong.tencentcloudapi.com
+亚太东南（新加坡）	hunyuan.ap-singapore.tencentcloudapi.com
+亚太东南（雅加达）	hunyuan.ap-jakarta.tencentcloudapi.com
+亚太东南（曼谷）	hunyuan.ap-bangkok.tencentcloudapi.com
+亚太东北（首尔）	hunyuan.ap-seoul.tencentcloudapi.com
+亚太东北（东京）	hunyuan.ap-tokyo.tencentcloudapi.com
+美国东部（弗吉尼亚）	hunyuan.na-ashburn.tencentcloudapi.com
+美国西部（硅谷）	hunyuan.na-siliconvalley.tencentcloudapi.com
+南美地区（圣保罗）	hunyuan.sa-saopaulo.tencentcloudapi.com
+欧洲地区（法兰克福）	hunyuan.eu-frankfurt.tencentcloudapi.com
+注意：由于金融区和非金融区是隔离不互通的，因此当访问金融区服务时（公共参数 Region 为金融区地域），需要同时指定带金融区地域的域名，最好和 Region 的地域保持一致。
+
+金融区接入地域	金融区域名
+华东地区（上海金融）	hunyuan.ap-shanghai-fsi.tencentcloudapi.com
+华南地区（深圳金融）	hunyuan.ap-shenzhen-fsi.tencentcloudapi.com
+2. 通信协议
+腾讯云 API 的所有接口均通过 HTTPS 进行通信，提供高安全性的通信通道。
+
+3. 请求方法
+支持的 HTTP 请求方法:
+
+POST（推荐）
+GET
+POST 请求支持的 Content-Type 类型：
+
+application/json（推荐），必须使用签名方法 v3（TC3-HMAC-SHA256）。
+application/x-www-form-urlencoded，必须使用签名方法 v1（HmacSHA1 或 HmacSHA256）。
+multipart/form-data（仅部分接口支持），必须使用签名方法 v3（TC3-HMAC-SHA256）。
+GET 请求的请求包大小不得超过32KB。POST 请求使用签名方法 v1（HmacSHA1、HmacSHA256）时不得超过1MB。POST 请求使用签名方法 v3（TC3-HMAC-SHA256）时支持10MB。
+
+4. 字符编码
+均使用UTF-8编码。
+
+公共参数
+最近更新时间：2024-11-15 01:39:05
+
+我的收藏
+本页目录：
+使用签名方法 v3 的公共参数
+使用签名方法 v1 的公共参数
+地域列表
+公共参数是用于标识用户和接口签名的参数，如非必要，在每个接口单独的文档中不再对这些参数进行说明，但每次请求均需要携带这些参数，才能正常发起请求。
+
+公共参数的具体内容会因您使用的签名方法版本不同而有所差异。
+
+使用签名方法 v3 的公共参数
+签名方法 v3 （有时也称作 TC3-HMAC-SHA256）相比签名方法 v1 （有些文档可能会简称签名方法），更安全，支持更大的请求包，支持 POST JSON 格式，性能有一定提升，推荐使用该签名方法计算签名。完整介绍详见 签名方法 v3。
+
+注意：出于简化的目的，部分接口文档中的示例使用的是签名方法 v1 GET 请求，而不是更安全的签名方法 v3。
+
+使用签名方法 v3 时，公共参数需要统一放到 HTTP Header 请求头部中，如下表所示：
+
+参数名称	类型	必选	描述
+Action	String	是	HTTP 请求头：X-TC-Action。操作的接口名称。取值参考接口文档输入参数章节关于公共参数 Action 的说明。例如云服务器的查询实例列表接口，取值为 DescribeInstances。
+Region	String	-	HTTP 请求头：X-TC-Region。地域参数，用来标识希望操作哪个地域的数据。取值参考接口文档中输入参数章节关于公共参数 Region 的说明。注意：某些接口不需要传递该参数，接口文档中会对此特别说明，此时即使传递该参数也不会生效。
+Timestamp	Integer	是	HTTP 请求头：X-TC-Timestamp。当前 UNIX 时间戳，可记录发起 API 请求的时间。例如 1529223702。注意：如果与服务器时间相差超过5分钟，会引起签名过期错误。
+Version	String	是	HTTP 请求头：X-TC-Version。操作的 API 的版本。取值参考接口文档中入参公共参数 Version 的说明。例如云服务器的版本 2017-03-12。
+Authorization	String	是	HTTP 标准身份认证头部字段，例如：
+TC3-HMAC-SHA256 Credential=AKID***/Date/service/tc3_request, SignedHeaders=content-type;host, Signature=fe5f80f77d5fa3beca038a248ff027d0445342fe2855ddc963176630326f1024
+其中，
+- TC3-HMAC-SHA256：签名方法，目前固定取该值；
+- Credential：签名凭证，AKID*** 是 SecretId；Date 是 UTC 标准时间的日期，取值需要和公共参数 X-TC-Timestamp 换算的 UTC 标准时间日期一致；service 为具体产品名，通常为域名前缀。例如，域名 cvm.tencentcloudapi.com 意味着产品名是 cvm。本产品取值为 hunyuan；tc3_request 为固定字符串；
+- SignedHeaders：参与签名计算的头部信息，content-type 和 host 为必选头部；
+- Signature：签名摘要，计算过程详见 文档。
+Token	String	否	HTTP 请求头：X-TC-Token。即 安全凭证服务 所颁发的临时安全凭证中的 Token，使用时需要将 SecretId 和 SecretKey 的值替换为临时安全凭证中的 TmpSecretId 和 TmpSecretKey。使用长期密钥时不能设置此 Token 字段。
+Language	String	否	HTTP 请求头：X-TC-Language。指定接口返回的语言，仅部分接口支持此参数。取值：zh-CN，en-US。zh-CN 返回中文，en-US 返回英文。
+假设用户想要查询广州地域的云服务器实例列表中的前十个，接口参数设置为偏移量 Offset=0，返回数量 Limit=10，则其请求结构按照请求 URL、请求头部、请求体示例如下:
+
+HTTP GET 请求结构示例:
+
+https://cvm.tencentcloudapi.com/?Limit=10&Offset=0
+
+Authorization: TC3-HMAC-SHA256 Credential=AKID********************************/2018-10-09/cvm/tc3_request, SignedHeaders=content-type;host, Signature=5da7a33f6993f0614b047e5df4582db9e9bf4672ba50567dba16c6ccf174c474
+Content-Type: application/x-www-form-urlencoded
+Host: cvm.tencentcloudapi.com
+X-TC-Action: DescribeInstances
+X-TC-Version: 2017-03-12
+X-TC-Timestamp: 1539084154
+X-TC-Region: ap-guangzhou
+HTTP POST （application/json） 请求结构示例：
+
+https://cvm.tencentcloudapi.com/
+
+Authorization: TC3-HMAC-SHA256 Credential=AKID********************************/2018-05-30/cvm/tc3_request, SignedHeaders=content-type;host, Signature=582c400e06b5924a6f2b5d7d672d79c15b13162d9279b0855cfba6789a8edb4c
+Content-Type: application/json
+Host: cvm.tencentcloudapi.com
+X-TC-Action: DescribeInstances
+X-TC-Version: 2017-03-12
+X-TC-Timestamp: 1527672334
+X-TC-Region: ap-guangzhou
+
+{"Offset":0,"Limit":10}
+HTTP POST （multipart/form-data）请求结构示例（仅特定的接口支持）：
+
+https://cvm.tencentcloudapi.com/
+
+Authorization: TC3-HMAC-SHA256 Credential=AKID********************************/2018-05-30/cvm/tc3_request, SignedHeaders=content-type;host, Signature=582c400e06b5924a6f2b5d7d672d79c15b13162d9279b0855cfba6789a8edb4c
+Content-Type: multipart/form-data; boundary=58731222010402
+Host: cvm.tencentcloudapi.com
+X-TC-Action: DescribeInstances
+X-TC-Version: 2017-03-12
+X-TC-Timestamp: 1527672334
+X-TC-Region: ap-guangzhou
+
+--58731222010402
+Content-Disposition: form-data; name="Offset"
+
+0
+--58731222010402
+Content-Disposition: form-data; name="Limit"
+
+10
+--58731222010402--
+使用签名方法 v1 的公共参数
+使用签名方法 v1 （有时会称作 HmacSHA256 和 HmacSHA1），公共参数需要统一放到请求串中，完整介绍详见文档
+
+参数名称	类型	必选	描述
+Action	String	是	操作的接口名称。取值参考接口文档中输入参数章节关于公共参数 Action 的说明。例如云服务器的查询实例列表接口，取值为 DescribeInstances。
+Region	String	-	地域参数，用来标识希望操作哪个地域的数据。接口接受的地域取值参考接口文档中输入参数公共参数 Region 的说明。注意：某些接口不需要传递该参数，接口文档中会对此特别说明，此时即使传递该参数也不会生效。
+Timestamp	Integer	是	当前 UNIX 时间戳，可记录发起 API 请求的时间。例如1529223702，如果与当前时间相差过大，会引起签名过期错误。
+Nonce	Integer	是	随机正整数，与 Timestamp 联合起来，用于防止重放攻击。
+SecretId	String	是	在 云API密钥 上申请的标识身份的 SecretId，一个 SecretId 对应唯一的 SecretKey ，而 SecretKey 会用来生成请求签名 Signature。
+Signature	String	是	请求签名，用来验证此次请求的合法性，需要用户根据实际的输入参数计算得出。具体计算方法参见 文档。
+Version	String	是	操作的 API 的版本。取值参考接口文档中入参公共参数 Version 的说明。例如云服务器的版本 2017-03-12。
+SignatureMethod	String	否	签名方式，目前支持 HmacSHA256 和 HmacSHA1。只有指定此参数为 HmacSHA256 时，才使用 HmacSHA256 算法验证签名，其他情况均使用 HmacSHA1 验证签名。
+Token	String	否	即 安全凭证服务 所颁发的临时安全凭证中的 Token，使用时需要将 SecretId 和 SecretKey 的值替换为临时安全凭证中的 TmpSecretId 和 TmpSecretKey。使用长期密钥时不能设置此 Token 字段。
+Language	String	否	指定接口返回的语言，仅部分接口支持此参数。取值：zh-CN，en-US。zh-CN 返回中文，en-US 返回英文。
+假设用户想要查询广州地域的云服务器实例列表，其请求结构按照请求 URL、请求头部、请求体示例如下:
+
+HTTP GET 请求结构示例:
+
+https://cvm.tencentcloudapi.com/?Action=DescribeInstances&Version=2017-03-12&SignatureMethod=HmacSHA256&Timestamp=1527672334&Signature=37ac2f4fde00b0ac9bd9eadeb459b1bbee224158d66e7ae5fcadb70b2d181d02&Region=ap-guangzhou&Nonce=23823223&SecretId=AKID********************************
+
+Host: cvm.tencentcloudapi.com
+HTTP POST 请求结构示例：
+
+https://cvm.tencentcloudapi.com/
+
+Host: cvm.tencentcloudapi.com
+Content-Type: application/x-www-form-urlencoded
+
+Action=DescribeInstances&Version=2017-03-12&SignatureMethod=HmacSHA256&Timestamp=1527672334&Signature=37ac2f4fde00b0ac9bd9eadeb459b1bbee224158d66e7ae5fcadb70b2d181d02&Region=ap-guangzhou&Nonce=23823223&SecretId=AKID********************************
+地域列表
+本产品所有接口 Region 字段的可选值如下表所示。如果接口不支持该表中的所有地域，则会在接口文档中单独说明。
+
+地域	取值
+华北地区（北京）	ap-beijing
+华南地区（广州）	ap-guangzhou
+
+
+签名方法 v3
+最近更新时间：2024-12-25 01:38:25
+
+我的收藏
+本页目录：
+为什么要进行签名
+申请安全凭证
+签名版本 v3 签名过程
+1. 拼接规范请求串
+2. 拼接待签名字符串
+3. 计算签名
+4. 拼接 Authorization
+签名演示
+Java
+Python
+Golang
+PHP
+Ruby
+DotNet
+NodeJS
+C++
+C
+其他语言
+签名失败
+以下文档说明了签名方法 v3 的签名过程，但仅在您编写自己的代码来调用腾讯云 API 时才有用。我们推荐您使用 腾讯云 API Explorer ，腾讯云 SDK 和 腾讯云命令行工具（TCCLI） 等开发者工具，从而无需学习如何对 API 请求进行签名。
+
+推荐使用 API Explorer
+点击调试
+您可以通过 API Explorer 的【签名串生成】模块查看每个接口签名的生成过程。
+腾讯云 API 会对每个请求进行身份验证，用户需要使用安全凭证，经过特定的步骤对请求进行签名（Signature），每个请求都需要在公共参数中指定该签名结果并以指定的方式和格式发送请求。
+
+为什么要进行签名
+签名通过以下方式帮助保护请求：
+
+验证请求者的身份
+签名确保请求是由持有有效访问密钥的人发送的。请参阅控制台 云 API 密钥 页面获取密钥相关信息。
+
+保护传输中的数据
+为了防止请求在传输过程中被篡改，腾讯云 API 会使用请求参数来计算请求的哈希值，并将生成的哈希值加密后作为请求的一部分，发送到腾讯云 API 服务器。服务器会使用收到的请求参数以同样的过程计算哈希值，并验证请求中的哈希值。如果请求被篡改，将导致哈希值不一致，腾讯云 API 将拒绝本次请求。
+
+签名方法 v3 （TC3-HMAC-SHA256）功能上覆盖了以前的签名方法 v1，而且更安全，支持更大的请求，支持 JSON 格式，POST 请求支持传空数组和空字符串，性能有一定提升，推荐使用该签名方法计算签名。
+
+首次接触，建议使用 API Explorer 中的“签名串生成”功能，选择签名版本为“API 3.0 签名 v3”，可以对生成签名过程进行验证，也可直接生成 SDK 代码。推荐使用腾讯云 API 配套的 8 种常见的编程语言 SDK，已经封装了签名和请求过程，均已开源，支持 Python、Java、PHP、Go、NodeJS、.NET、C++、Ruby。
+
+申请安全凭证
+本文使用的安全凭证为密钥，密钥包括 SecretId 和 SecretKey。每个用户最多可以拥有两对密钥。
+
+SecretId：用于标识 API 调用者身份，可以简单类比为用户名。
+SecretKey：用于验证 API 调用者的身份，可以简单类比为密码。
+用户必须严格保管安全凭证，避免泄露，否则将危及财产安全。如已泄露，请立刻禁用该安全凭证。
+申请安全凭证的具体步骤如下：
+
+登录 腾讯云管理中心控制台 。
+前往 云API密钥 的控制台页面。
+在 云API密钥 页面，单击【新建密钥】创建一对密钥。
+签名版本 v3 签名过程
+云 API 支持 GET 和 POST 请求。对于GET方法，只支持 Content-Type: application/x-www-form-urlencoded 协议格式。对于POST方法，目前支持 Content-Type: application/json 以及 Content-Type: multipart/form-data 两种协议格式，json 格式绝大多数接口均支持，multipart 格式只有特定接口支持，此时该接口不能使用 json 格式调用，参考具体业务接口文档说明。推荐使用 POST 请求，因为两者的结果并无差异，但 GET 请求只支持 32 KB 以内的请求包。
+
+下面以云服务器查询广州区实例列表作为例子，分步骤介绍签名的计算过程。我们选择该接口是因为：
+
+云服务器默认已开通，该接口很常用；
+该接口是只读的，不会改变现有资源的状态；
+接口覆盖的参数种类较全，可以演示包含数据结构的数组如何使用。
+在示例中，不论公共参数或者接口的参数，我们尽量选择容易犯错的情况。在实际调用接口时，请根据实际情况来，每个接口的参数并不相同，不要照抄这个例子的参数和值。此外，这里只展示了部分公共参数和接口输入参数，用户可以根据实际需要添加其他参数，例如 Language 和 Token 公共参数（在 HTTP 头部设置，添加 X-TC- 前缀）。
+
+假设用户的 SecretId 和 SecretKey 分别是：AKID******************************** 和 ********************************。用户想查看广州区云服务器名为“未命名”的主机状态，只返回一条数据。则请求可能为：
+
+curl -X POST https://cvm.tencentcloudapi.com \
+-H "Authorization: TC3-HMAC-SHA256 Credential=AKID********************************/2019-02-25/cvm/tc3_request, SignedHeaders=content-type;host;x-tc-action, Signature=10b1a37a7301a02ca19a647ad722d5e43b4b3cff309d421d85b46093f6ab6c4f" \
+-H "Content-Type: application/json; charset=utf-8" \
+-H "Host: cvm.tencentcloudapi.com" \
+-H "X-TC-Action: DescribeInstances" \
+-H "X-TC-Timestamp: 1551113065" \
+-H "X-TC-Version: 2017-03-12" \
+-H "X-TC-Region: ap-guangzhou" \
+-d '{"Limit": 1, "Filters": [{"Values": ["\u672a\u547d\u540d"], "Name": "instance-name"}]}'
+下面详细解释签名计算过程。
+
+1. 拼接规范请求串
+按如下伪代码格式拼接规范请求串（CanonicalRequest）：
+
+CanonicalRequest =
+    HTTPRequestMethod + '\n' +
+    CanonicalURI + '\n' +
+    CanonicalQueryString + '\n' +
+    CanonicalHeaders + '\n' +
+    SignedHeaders + '\n' +
+    HashedRequestPayload
+字段名称	解释
+HTTPRequestMethod	HTTP 请求方法（GET、POST ）。此示例取值为 POST。
+CanonicalURI	URI 参数，API 3.0 固定为正斜杠（/）。
+CanonicalQueryString	发起 HTTP 请求 URL 中的查询字符串，对于 POST 请求，固定为空字符串""，对于 GET 请求，则为 URL 中问号（?）后面的字符串内容，例如：Limit=10&Offset=0。
+注意：CanonicalQueryString 需要参考 RFC3986 进行 URLEncode 编码（特殊字符编码后需大写字母），字符集 UTF-8。推荐使用编程语言标准库进行编码。
+CanonicalHeaders	参与签名的头部信息，至少包含 host 和 content-type 两个头部，也可加入其他头部参与签名以提高自身请求的唯一性和安全性，此示例额外增加了接口名头部。
+拼接规则：
+头部 key 和 value 统一转成小写，并去掉首尾空格，按照 key:value\n 格式拼接；
+多个头部，按照头部 key（小写）的 ASCII 升序进行拼接。
+此示例计算结果是 content-type:application/json; charset=utf-8\nhost:cvm.tencentcloudapi.com\nx-tc-action:describeinstances\n。
+注意：content-type 必须和实际发送的相符合，有些编程语言网络库即使未指定也会自动添加 charset 值，如果签名时和发送时不一致，服务器会返回签名校验失败。
+SignedHeaders	参与签名的头部信息，说明此次请求有哪些头部参与了签名，和 CanonicalHeaders 包含的头部内容是一一对应的。content-type 和 host 为必选头部。
+拼接规则：
+头部 key 统一转成小写；
+多个头部 key（小写）按照 ASCII 升序进行拼接，并且以分号（;）分隔。
+此示例为 content-type;host;x-tc-action
+HashedRequestPayload	请求正文（payload，即 body，此示例为 {"Limit": 1, "Filters": [{"Values": ["\u672a\u547d\u540d"], "Name": "instance-name"}]}）的哈希值，计算伪代码为 Lowercase(HexEncode(Hash.SHA256(RequestPayload)))，即对 HTTP 请求正文做 SHA256 哈希，然后十六进制编码，最后编码串转换成小写字母。对于 GET 请求，RequestPayload 固定为空字符串。此示例计算结果是 35e9c5b0e3ae67532d3c9f17ead6c90222632e5b1ff7f6e89887f1398934f064。
+根据以上规则，示例中得到的规范请求串如下：
+
+POST
+/
+
+content-type:application/json; charset=utf-8
+host:cvm.tencentcloudapi.com
+x-tc-action:describeinstances
+
+content-type;host;x-tc-action
+35e9c5b0e3ae67532d3c9f17ead6c90222632e5b1ff7f6e89887f1398934f064
+2. 拼接待签名字符串
+按如下格式拼接待签名字符串：
+
+StringToSign =
+    Algorithm + "\n" +
+    RequestTimestamp + "\n" +
+    CredentialScope + "\n" +
+    HashedCanonicalRequest
+字段名称	解释
+Algorithm	签名算法，目前固定为 TC3-HMAC-SHA256。
+RequestTimestamp	请求时间戳，即请求头部的公共参数 X-TC-Timestamp 取值，取当前时间 UNIX 时间戳，精确到秒。此示例取值为 1551113065。
+CredentialScope	凭证范围，格式为 Date/service/tc3_request，包含日期、所请求的服务和终止字符串（tc3_request）。Date 为 UTC 标准时间的日期，取值需要和公共参数 X-TC-Timestamp 换算的 UTC 标准时间日期一致；service 为产品名，必须与调用的产品域名一致。此示例计算结果是 2019-02-25/cvm/tc3_request。
+HashedCanonicalRequest	前述步骤拼接所得规范请求串的哈希值，计算伪代码为 Lowercase(HexEncode(Hash.SHA256(CanonicalRequest)))。此示例计算结果是 7019a55be8395899b900fb5564e4200d984910f34794a27cb3fb7d10ff6a1e84。
+注意：
+
+Date 必须从时间戳 X-TC-Timestamp 计算得到，且时区为 UTC+0。如果加入系统本地时区信息，例如东八区，将导致白天和晚上调用成功，但是凌晨时调用必定失败。假设时间戳为 1551113065，在东八区的时间是 2019-02-26 00:44:25，但是计算得到的 Date 取 UTC+0 的日期应为 2019-02-25，而不是 2019-02-26。
+Timestamp 必须是当前系统时间，且需确保系统时间和标准时间是同步的，如果相差超过五分钟则必定失败。如果长时间不和标准时间同步，可能运行一段时间后，请求失败，返回签名过期错误。
+根据以上规则，示例中得到的待签名字符串如下：
+
+TC3-HMAC-SHA256
+1551113065
+2019-02-25/cvm/tc3_request
+7019a55be8395899b900fb5564e4200d984910f34794a27cb3fb7d10ff6a1e84
+3. 计算签名
+1）计算派生签名密钥，伪代码如下：
+
+SecretKey = "********************************"
+SecretDate = HMAC_SHA256("TC3" + SecretKey, Date)
+SecretService = HMAC_SHA256(SecretDate, Service)
+SecretSigning = HMAC_SHA256(SecretService, "tc3_request")
+派生出的密钥 SecretDate、SecretService 和 SecretSigning 是二进制的数据，可能包含不可打印字符，将其转为十六进制字符串打印的输出分别为：da98fb70dcf6b112dc21038d1eeeb3a95c74b4dcb12c1131f864f6066bd02be0，8d70cbefb03939f929db64d32dc2ba89b1095620119fe3e050e2b18c5bd2752f，b596b923aad85185e2d1f6659d2a062e0a86731226e021e61bfe06f7ed05f5af。
+
+请注意，不同的编程语言，HMAC 库函数中参数顺序可能不一样，请以实际情况为准。此处的伪代码密钥参数 key 在前，消息参数 data 在后。通常标准库函数会提供二进制格式的返回值，也可能会提供打印友好的十六进制格式的返回值，此处使用的是二进制格式。
+
+字段名称	解释
+SecretKey	原始的 SecretKey，即 ********************************。
+Date	即 Credential 中的 Date 字段信息。此示例取值为 2019-02-25。
+Service	即 Credential 中的 Service 字段信息。此示例取值为 cvm。
+2）计算签名，伪代码如下：
+
+Signature = HexEncode(HMAC_SHA256(SecretSigning, StringToSign))
+此示例计算结果是 10b1a37a7301a02ca19a647ad722d5e43b4b3cff309d421d85b46093f6ab6c4f。
+
+4. 拼接 Authorization
+按如下格式拼接 Authorization：
+
+Authorization =
+    Algorithm + ' ' +
+    'Credential=' + SecretId + '/' + CredentialScope + ', ' +
+    'SignedHeaders=' + SignedHeaders + ', ' +
+    'Signature=' + Signature
+字段名称	解释
+Algorithm	签名方法，固定为 TC3-HMAC-SHA256。
+SecretId	密钥对中的 SecretId，即 AKID********************************。
+CredentialScope	见上文，凭证范围。此示例计算结果是 2019-02-25/cvm/tc3_request。
+SignedHeaders	见上文，参与签名的头部信息。此示例取值为 content-type;host;x-tc-action。
+Signature	签名值。此示例计算结果是 10b1a37a7301a02ca19a647ad722d5e43b4b3cff309d421d85b46093f6ab6c4f。
+根据以上规则，示例中得到的值为：
+
+TC3-HMAC-SHA256 Credential=AKID********************************/2019-02-25/cvm/tc3_request, SignedHeaders=content-type;host;x-tc-action, Signature=10b1a37a7301a02ca19a647ad722d5e43b4b3cff309d421d85b46093f6ab6c4f
+最终完整的调用信息如下：
+
+POST https://cvm.tencentcloudapi.com/
+Authorization: TC3-HMAC-SHA256 Credential=AKID********************************/2019-02-25/cvm/tc3_request, SignedHeaders=content-type;host;x-tc-action, Signature=10b1a37a7301a02ca19a647ad722d5e43b4b3cff309d421d85b46093f6ab6c4f
+Content-Type: application/json; charset=utf-8
+Host: cvm.tencentcloudapi.com
+X-TC-Action: DescribeInstances
+X-TC-Version: 2017-03-12
+X-TC-Timestamp: 1551113065
+X-TC-Region: ap-guangzhou
+
+{"Limit": 1, "Filters": [{"Values": ["\u672a\u547d\u540d"], "Name": "instance-name"}]}
+注意：
+
+请求发送时的 HTTP 头部（Header）和请求体（Payload）必须和签名计算过程中的内容完全一致，否则会返回签名不一致错误。可以通过打印实际请求内容，网络抓包等方式对比排查。
+
+签名演示
+在实际调用 API 3.0 时，推荐使用配套的腾讯云 SDK 3.0 ，SDK 封装了签名的过程，开发时只关注产品提供的具体接口即可。详细信息参见 SDK 中心。当前支持的编程语言有：
+
+Python
+Java
+PHP
+Go
+NodeJS
+.NET
+C++
+Ruby
+下面提供了不同产品的生成签名 demo，您可以找到对应的产品参考签名的生成：
+
+Signature Demo
+为了更清楚地解释签名过程，下面以实际编程语言为例，将上述的签名过程完整实现。请求的域名、调用的接口和参数的取值都以上述签名过程为准，代码只为解释签名过程，并不具备通用性，实际开发请尽量使用 SDK。
+
+Java
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.TreeMap;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+
+public class TencentCloudAPITC3Demo {
+    private final static Charset UTF8 = StandardCharsets.UTF_8;
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+    private final static String SECRET_ID = System.getenv("TENCENTCLOUD_SECRET_ID");
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+    private final static String SECRET_KEY = System.getenv("TENCENTCLOUD_SECRET_KEY");
+    private final static String CT_JSON = "application/json; charset=utf-8";
+
+    public static byte[] hmac256(byte[] key, String msg) throws Exception {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, mac.getAlgorithm());
+        mac.init(secretKeySpec);
+        return mac.doFinal(msg.getBytes(UTF8));
+    }
+
+    public static String sha256Hex(String s) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] d = md.digest(s.getBytes(UTF8));
+        return DatatypeConverter.printHexBinary(d).toLowerCase();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String service = "cvm";
+        String host = "cvm.tencentcloudapi.com";
+        String region = "ap-guangzhou";
+        String action = "DescribeInstances";
+        String version = "2017-03-12";
+        String algorithm = "TC3-HMAC-SHA256";
+        String timestamp = "1551113065";
+        //String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // 注意时区，否则容易出错
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String date = sdf.format(new Date(Long.valueOf(timestamp + "000")));
+
+        // ************* 步骤 1：拼接规范请求串 *************
+        String httpRequestMethod = "POST";
+        String canonicalUri = "/";
+        String canonicalQueryString = "";
+        String canonicalHeaders = "content-type:application/json; charset=utf-8\n"
+                + "host:" + host + "\n" + "x-tc-action:" + action.toLowerCase() + "\n";
+        String signedHeaders = "content-type;host;x-tc-action";
+
+        String payload = "{\"Limit\": 1, \"Filters\": [{\"Values\": [\"\\u672a\\u547d\\u540d\"], \"Name\": \"instance-name\"}]}";
+        String hashedRequestPayload = sha256Hex(payload);
+        String canonicalRequest = httpRequestMethod + "\n" + canonicalUri + "\n" + canonicalQueryString + "\n"
+                + canonicalHeaders + "\n" + signedHeaders + "\n" + hashedRequestPayload;
+        System.out.println(canonicalRequest);
+
+        // ************* 步骤 2：拼接待签名字符串 *************
+        String credentialScope = date + "/" + service + "/" + "tc3_request";
+        String hashedCanonicalRequest = sha256Hex(canonicalRequest);
+        String stringToSign = algorithm + "\n" + timestamp + "\n" + credentialScope + "\n" + hashedCanonicalRequest;
+        System.out.println(stringToSign);
+
+        // ************* 步骤 3：计算签名 *************
+        byte[] secretDate = hmac256(("TC3" + SECRET_KEY).getBytes(UTF8), date);
+        byte[] secretService = hmac256(secretDate, service);
+        byte[] secretSigning = hmac256(secretService, "tc3_request");
+        String signature = DatatypeConverter.printHexBinary(hmac256(secretSigning, stringToSign)).toLowerCase();
+        System.out.println(signature);
+
+        // ************* 步骤 4：拼接 Authorization *************
+        String authorization = algorithm + " " + "Credential=" + SECRET_ID + "/" + credentialScope + ", "
+                + "SignedHeaders=" + signedHeaders + ", " + "Signature=" + signature;
+        System.out.println(authorization);
+
+        TreeMap<String, String> headers = new TreeMap<String, String>();
+        headers.put("Authorization", authorization);
+        headers.put("Content-Type", CT_JSON);
+        headers.put("Host", host);
+        headers.put("X-TC-Action", action);
+        headers.put("X-TC-Timestamp", timestamp);
+        headers.put("X-TC-Version", version);
+        headers.put("X-TC-Region", region);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("curl -X POST https://").append(host)
+        .append(" -H \"Authorization: ").append(authorization).append("\"")
+        .append(" -H \"Content-Type: application/json; charset=utf-8\"")
+        .append(" -H \"Host: ").append(host).append("\"")
+        .append(" -H \"X-TC-Action: ").append(action).append("\"")
+        .append(" -H \"X-TC-Timestamp: ").append(timestamp).append("\"")
+        .append(" -H \"X-TC-Version: ").append(version).append("\"")
+        .append(" -H \"X-TC-Region: ").append(region).append("\"")
+        .append(" -d '").append(payload).append("'");
+        System.out.println(sb.toString());
+    }
+}
+Python
+# -*- coding: utf-8 -*-
+import hashlib, hmac, json, os, sys, time
+from datetime import datetime
+
+# 密钥参数
+# 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+secret_id = os.environ.get("TENCENTCLOUD_SECRET_ID")
+# 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+secret_key = os.environ.get("TENCENTCLOUD_SECRET_KEY")
+
+service = "cvm"
+host = "cvm.tencentcloudapi.com"
+endpoint = "https://" + host
+region = "ap-guangzhou"
+action = "DescribeInstances"
+version = "2017-03-12"
+algorithm = "TC3-HMAC-SHA256"
+#timestamp = int(time.time())
+timestamp = 1551113065
+date = datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%d")
+params = {"Limit": 1, "Filters": [{"Values": [u"未命名"], "Name": "instance-name"}]}
+
+# ************* 步骤 1：拼接规范请求串 *************
+http_request_method = "POST"
+canonical_uri = "/"
+canonical_querystring = ""
+ct = "application/json; charset=utf-8"
+payload = json.dumps(params)
+canonical_headers = "content-type:%s\nhost:%s\nx-tc-action:%s\n" % (ct, host, action.lower())
+signed_headers = "content-type;host;x-tc-action"
+hashed_request_payload = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+canonical_request = (http_request_method + "\n" +
+                     canonical_uri + "\n" +
+                     canonical_querystring + "\n" +
+                     canonical_headers + "\n" +
+                     signed_headers + "\n" +
+                     hashed_request_payload)
+print(canonical_request)
+
+# ************* 步骤 2：拼接待签名字符串 *************
+credential_scope = date + "/" + service + "/" + "tc3_request"
+hashed_canonical_request = hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()
+string_to_sign = (algorithm + "\n" +
+                  str(timestamp) + "\n" +
+                  credential_scope + "\n" +
+                  hashed_canonical_request)
+print(string_to_sign)
+
+
+# ************* 步骤 3：计算签名 *************
+# 计算签名摘要函数
+def sign(key, msg):
+    return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
+secret_date = sign(("TC3" + secret_key).encode("utf-8"), date)
+secret_service = sign(secret_date, service)
+secret_signing = sign(secret_service, "tc3_request")
+signature = hmac.new(secret_signing, string_to_sign.encode("utf-8"), hashlib.sha256).hexdigest()
+print(signature)
+
+# ************* 步骤 4：拼接 Authorization *************
+authorization = (algorithm + " " +
+                 "Credential=" + secret_id + "/" + credential_scope + ", " +
+                 "SignedHeaders=" + signed_headers + ", " +
+                 "Signature=" + signature)
+print(authorization)
+
+print('curl -X POST ' + endpoint
+      + ' -H "Authorization: ' + authorization + '"'
+      + ' -H "Content-Type: application/json; charset=utf-8"'
+      + ' -H "Host: ' + host + '"'
+      + ' -H "X-TC-Action: ' + action + '"'
+      + ' -H "X-TC-Timestamp: ' + str(timestamp) + '"'
+      + ' -H "X-TC-Version: ' + version + '"'
+      + ' -H "X-TC-Region: ' + region + '"'
+      + " -d '" + payload + "'")
+Golang
+package main
+
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+    "fmt"
+    "os"
+    "strings"
+    "time"
+)
+
+func sha256hex(s string) string {
+    b := sha256.Sum256([]byte(s))
+    return hex.EncodeToString(b[:])
+}
+
+func hmacsha256(s, key string) string {
+    hashed := hmac.New(sha256.New, []byte(key))
+    hashed.Write([]byte(s))
+    return string(hashed.Sum(nil))
+}
+
+func main() {
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+    secretId := os.Getenv("TENCENTCLOUD_SECRET_ID")
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+    secretKey := os.Getenv("TENCENTCLOUD_SECRET_KEY")
+    host := "cvm.tencentcloudapi.com"
+    algorithm := "TC3-HMAC-SHA256"
+    service := "cvm"
+    version := "2017-03-12"
+    action := "DescribeInstances"
+    region := "ap-guangzhou"
+    //var timestamp int64 = time.Now().Unix()
+    var timestamp int64 = 1551113065
+
+    // step 1: build canonical request string
+    httpRequestMethod := "POST"
+    canonicalURI := "/"
+    canonicalQueryString := ""
+    canonicalHeaders := fmt.Sprintf("content-type:%s\nhost:%s\nx-tc-action:%s\n",
+        "application/json; charset=utf-8", host, strings.ToLower(action))
+    signedHeaders := "content-type;host;x-tc-action"
+    payload := `{"Limit": 1, "Filters": [{"Values": ["\u672a\u547d\u540d"], "Name": "instance-name"}]}`
+    hashedRequestPayload := sha256hex(payload)
+    canonicalRequest := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s",
+        httpRequestMethod,
+        canonicalURI,
+        canonicalQueryString,
+        canonicalHeaders,
+        signedHeaders,
+        hashedRequestPayload)
+    fmt.Println(canonicalRequest)
+
+    // step 2: build string to sign
+    date := time.Unix(timestamp, 0).UTC().Format("2006-01-02")
+    credentialScope := fmt.Sprintf("%s/%s/tc3_request", date, service)
+    hashedCanonicalRequest := sha256hex(canonicalRequest)
+    string2sign := fmt.Sprintf("%s\n%d\n%s\n%s",
+        algorithm,
+        timestamp,
+        credentialScope,
+        hashedCanonicalRequest)
+    fmt.Println(string2sign)
+
+    // step 3: sign string
+    secretDate := hmacsha256(date, "TC3"+secretKey)
+    secretService := hmacsha256(service, secretDate)
+    secretSigning := hmacsha256("tc3_request", secretService)
+    signature := hex.EncodeToString([]byte(hmacsha256(string2sign, secretSigning)))
+    fmt.Println(signature)
+
+    // step 4: build authorization
+    authorization := fmt.Sprintf("%s Credential=%s/%s, SignedHeaders=%s, Signature=%s",
+        algorithm,
+        secretId,
+        credentialScope,
+        signedHeaders,
+        signature)
+    fmt.Println(authorization)
+
+    curl := fmt.Sprintf(`curl -X POST https://%s\
+ -H "Authorization: %s"\
+ -H "Content-Type: application/json; charset=utf-8"\
+ -H "Host: %s" -H "X-TC-Action: %s"\
+ -H "X-TC-Timestamp: %d"\
+ -H "X-TC-Version: %s"\
+ -H "X-TC-Region: %s"\
+ -d '%s'`, host, authorization, host, action, timestamp, version, region, payload)
+    fmt.Println(curl)
+}
+PHP
+<?php
+// 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+$secretId = getenv("TENCENTCLOUD_SECRET_ID");
+// 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+$secretKey = getenv("TENCENTCLOUD_SECRET_KEY");
+$host = "cvm.tencentcloudapi.com";
+$service = "cvm";
+$version = "2017-03-12";
+$action = "DescribeInstances";
+$region = "ap-guangzhou";
+// $timestamp = time();
+$timestamp = 1551113065;
+$algorithm = "TC3-HMAC-SHA256";
+
+// step 1: build canonical request string
+$httpRequestMethod = "POST";
+$canonicalUri = "/";
+$canonicalQueryString = "";
+$canonicalHeaders = implode("\n", [
+    "content-type:application/json; charset=utf-8",
+    "host:".$host,
+    "x-tc-action:".strtolower($action),
+    ""
+]);
+$signedHeaders = implode(";", [
+    "content-type",
+    "host",
+    "x-tc-action",
+]);
+$payload = '{"Limit": 1, "Filters": [{"Values": ["\u672a\u547d\u540d"], "Name": "instance-name"}]}';
+$hashedRequestPayload = hash("SHA256", $payload);
+$canonicalRequest = $httpRequestMethod."\n"
+    .$canonicalUri."\n"
+    .$canonicalQueryString."\n"
+    .$canonicalHeaders."\n"
+    .$signedHeaders."\n"
+    .$hashedRequestPayload;
+echo $canonicalRequest.PHP_EOL;
+
+// step 2: build string to sign
+$date = gmdate("Y-m-d", $timestamp);
+$credentialScope = $date."/".$service."/tc3_request";
+$hashedCanonicalRequest = hash("SHA256", $canonicalRequest);
+$stringToSign = $algorithm."\n"
+    .$timestamp."\n"
+    .$credentialScope."\n"
+    .$hashedCanonicalRequest;
+echo $stringToSign.PHP_EOL;
+
+// step 3: sign string
+$secretDate = hash_hmac("SHA256", $date, "TC3".$secretKey, true);
+$secretService = hash_hmac("SHA256", $service, $secretDate, true);
+$secretSigning = hash_hmac("SHA256", "tc3_request", $secretService, true);
+$signature = hash_hmac("SHA256", $stringToSign, $secretSigning);
+echo $signature.PHP_EOL;
+
+// step 4: build authorization
+$authorization = $algorithm
+    ." Credential=".$secretId."/".$credentialScope
+    .", SignedHeaders=".$signedHeaders.", Signature=".$signature;
+echo $authorization.PHP_EOL;
+
+$curl = "curl -X POST https://".$host
+    .' -H "Authorization: '.$authorization.'"'
+    .' -H "Content-Type: application/json; charset=utf-8"'
+    .' -H "Host: '.$host.'"'
+    .' -H "X-TC-Action: '.$action.'"'
+    .' -H "X-TC-Timestamp: '.$timestamp.'"'
+    .' -H "X-TC-Version: '.$version.'"'
+    .' -H "X-TC-Region: '.$region.'"'
+    ." -d '".$payload."'";
+echo $curl.PHP_EOL;
+Ruby
+# -*- coding: UTF-8 -*-
+# require ruby>=2.3.0
+require 'digest'
+require 'json'
+require 'time'
+require 'openssl'
+
+# 密钥参数
+# 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+secret_id = ENV["TENCENTCLOUD_SECRET_ID"]
+# 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+secret_key = ENV["TENCENTCLOUD_SECRET_KEY"]
+
+service = 'cvm'
+host = 'cvm.tencentcloudapi.com'
+endpoint = 'https://' + host
+region = 'ap-guangzhou'
+action = 'DescribeInstances'
+version = '2017-03-12'
+algorithm = 'TC3-HMAC-SHA256'
+# timestamp = Time.now.to_i
+timestamp = 1551113065
+date = Time.at(timestamp).utc.strftime('%Y-%m-%d')
+
+# ************* 步骤 1：拼接规范请求串 *************
+http_request_method = 'POST'
+canonical_uri = '/'
+canonical_querystring = ''
+canonical_headers = "content-type:application/json; charset=utf-8\nhost:#{host}\nx-tc-action:#{action.downcase}\n"
+signed_headers = 'content-type;host;x-tc-action'
+# params = { 'Limit' => 1, 'Filters' => [{ 'Name' => 'instance-name', 'Values' => ['未命名'] }] }
+# payload = JSON.generate(params, { 'ascii_only' => true, 'space' => ' ' })
+# json will generate in random order, to get specified result in example, we hard-code it here.
+payload = '{"Limit": 1, "Filters": [{"Values": ["\u672a\u547d\u540d"], "Name": "instance-name"}]}'
+hashed_request_payload = Digest::SHA256.hexdigest(payload)
+canonical_request = [
+                        http_request_method,
+                        canonical_uri,
+                        canonical_querystring,
+                        canonical_headers,
+                        signed_headers,
+                        hashed_request_payload,
+                    ].join("\n")
+
+puts canonical_request
+
+# ************* 步骤 2：拼接待签名字符串 *************
+credential_scope = date + '/' + service + '/' + 'tc3_request'
+hashed_request_payload = Digest::SHA256.hexdigest(canonical_request)
+string_to_sign = [
+                    algorithm,
+                    timestamp.to_s,
+                    credential_scope,
+                    hashed_request_payload,
+                 ].join("\n")
+puts string_to_sign
+
+# ************* 步骤 3：计算签名 *************
+digest = OpenSSL::Digest.new('sha256')
+secret_date = OpenSSL::HMAC.digest(digest, 'TC3' + secret_key, date)
+secret_service = OpenSSL::HMAC.digest(digest, secret_date, service)
+secret_signing = OpenSSL::HMAC.digest(digest, secret_service, 'tc3_request')
+signature = OpenSSL::HMAC.hexdigest(digest, secret_signing, string_to_sign)
+puts signature
+
+# ************* 步骤 4：拼接 Authorization *************
+authorization = "#{algorithm} Credential=#{secret_id}/#{credential_scope}, SignedHeaders=#{signed_headers}, Signature=#{signature}"
+puts authorization
+
+puts  'curl -X POST ' + endpoint \
+      + ' -H "Authorization: ' + authorization + '"' \
+      + ' -H "Content-Type: application/json; charset=utf-8"' \
+      + ' -H "Host: ' + host + '"' \
+      + ' -H "X-TC-Action: ' + action + '"' \
+      + ' -H "X-TC-Timestamp: ' + timestamp.to_s + '"' \
+      + ' -H "X-TC-Version: ' + version + '"' \
+      + ' -H "X-TC-Region: ' + region + '"' \
+      + " -d '" + payload + "'"
+DotNet
+using System;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
+
+public class Application
+{
+    public static string SHA256Hex(string s)
+    {
+        using (SHA256 algo = SHA256.Create())
+        {
+            byte[] hashbytes = algo.ComputeHash(Encoding.UTF8.GetBytes(s));
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hashbytes.Length; ++i)
+            {
+                builder.Append(hashbytes[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
+    }
+
+    public static byte[] HmacSHA256(byte[] key, byte[] msg)
+    {
+        using (HMACSHA256 mac = new HMACSHA256(key))
+        {
+            return mac.ComputeHash(msg);
+        }
+    }
+
+    public static Dictionary<String, String> BuildHeaders(string secretid,
+        string secretkey, string service, string endpoint, string region,
+        string action, string version, DateTime date, string requestPayload)
+    {
+        string datestr = date.ToString("yyyy-MM-dd");
+        DateTime startTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        long requestTimestamp = (long)Math.Round((date - startTime).TotalMilliseconds, MidpointRounding.AwayFromZero) / 1000;
+        // ************* 步骤 1：拼接规范请求串 *************
+        string algorithm = "TC3-HMAC-SHA256";
+        string httpRequestMethod = "POST";
+        string canonicalUri = "/";
+        string canonicalQueryString = "";
+        string contentType = "application/json";
+        string canonicalHeaders = "content-type:" + contentType + "; charset=utf-8\n"
+            + "host:" + endpoint + "\n"
+            + "x-tc-action:" + action.ToLower() + "\n";
+        string signedHeaders = "content-type;host;x-tc-action";
+        string hashedRequestPayload = SHA256Hex(requestPayload);
+        string canonicalRequest = httpRequestMethod + "\n"
+            + canonicalUri + "\n"
+            + canonicalQueryString + "\n"
+            + canonicalHeaders + "\n"
+            + signedHeaders + "\n"
+            + hashedRequestPayload;
+        Console.WriteLine(canonicalRequest);
+
+        // ************* 步骤 2：拼接待签名字符串 *************
+        string credentialScope = datestr + "/" + service + "/" + "tc3_request";
+        string hashedCanonicalRequest = SHA256Hex(canonicalRequest);
+        string stringToSign = algorithm + "\n"
+            + requestTimestamp.ToString() + "\n"
+            + credentialScope + "\n"
+            + hashedCanonicalRequest;
+        Console.WriteLine(stringToSign);
+
+        // ************* 步骤 3：计算签名 *************
+        byte[] tc3SecretKey = Encoding.UTF8.GetBytes("TC3" + secretkey);
+        byte[] secretDate = HmacSHA256(tc3SecretKey, Encoding.UTF8.GetBytes(datestr));
+        byte[] secretService = HmacSHA256(secretDate, Encoding.UTF8.GetBytes(service));
+        byte[] secretSigning = HmacSHA256(secretService, Encoding.UTF8.GetBytes("tc3_request"));
+        byte[] signatureBytes = HmacSHA256(secretSigning, Encoding.UTF8.GetBytes(stringToSign));
+        string signature = BitConverter.ToString(signatureBytes).Replace("-", "").ToLower();
+        Console.WriteLine(signature);
+
+        // ************* 步骤 4：拼接 Authorization *************
+        string authorization = algorithm + " "
+            + "Credential=" + secretid + "/" + credentialScope + ", "
+            + "SignedHeaders=" + signedHeaders + ", "
+            + "Signature=" + signature;
+        Console.WriteLine(authorization);
+
+        Dictionary<string, string> headers = new Dictionary<string, string>();
+        headers.Add("Authorization", authorization);
+        headers.Add("Host", endpoint);
+        headers.Add("Content-Type", contentType + "; charset=utf-8");
+        headers.Add("X-TC-Timestamp", requestTimestamp.ToString());
+        headers.Add("X-TC-Version", version);
+        headers.Add("X-TC-Action", action);
+        headers.Add("X-TC-Region", region);
+        return headers;
+    }
+    public static void Main(string[] args)
+    {
+        // 密钥参数
+        // 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+        string SECRET_ID = Environment.GetEnvironmentVariable("TENCENTCLOUD_SECRET_ID");
+        // 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+        string SECRET_KEY = Environment.GetEnvironmentVariable("TENCENTCLOUD_SECRET_KEY");
+
+        string service = "cvm";
+        string endpoint = "cvm.tencentcloudapi.com";
+        string region = "ap-guangzhou";
+        string action = "DescribeInstances";
+        string version = "2017-03-12";
+
+        // 此处由于示例规范的原因，采用时间戳2019-02-26 00:44:25，此参数作为示例，如果在项目中，您应当使用：
+        // DateTime date = DateTime.UtcNow;
+        // 注意时区，建议此时间统一采用UTC时间戳，否则容易出错
+        DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(1551113065);
+        string requestPayload = "{\"Limit\": 1, \"Filters\": [{\"Values\": [\"\\u672a\\u547d\\u540d\"], \"Name\": \"instance-name\"}]}";
+
+        Dictionary<string, string> headers = BuildHeaders(SECRET_ID, SECRET_KEY, service
+            , endpoint, region, action, version, date, requestPayload);
+
+        Console.WriteLine("POST https://cvm.tencentcloudapi.com");
+        foreach (KeyValuePair<string, string> kv in headers)
+        {
+            Console.WriteLine(kv.Key + ": " + kv.Value);
+        }
+        Console.WriteLine();
+        Console.WriteLine(requestPayload);
+    }
+}
+NodeJS
+const crypto = require('crypto');
+
+function sha256(message, secret = '', encoding) {
+    const hmac = crypto.createHmac('sha256', secret)
+    return hmac.update(message).digest(encoding)
+}
+
+function getHash(message, encoding = 'hex') {
+    const hash = crypto.createHash('sha256')
+    return hash.update(message).digest(encoding)
+}
+
+function getDate(timestamp) {
+    const date = new Date(timestamp * 1000)
+    const year = date.getUTCFullYear()
+    const month = ('0' + (date.getUTCMonth() + 1)).slice(-2)
+    const day = ('0' + date.getUTCDate()).slice(-2)
+    return `${year}-${month}-${day}`
+}
+
+function main(){
+    // 密钥参数
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+    const SECRET_ID = process.env.TENCENTCLOUD_SECRET_ID
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+    const SECRET_KEY = process.env.TENCENTCLOUD_SECRET_KEY
+
+    const endpoint = "cvm.tencentcloudapi.com"
+    const service = "cvm"
+    const region = "ap-guangzhou"
+    const action = "DescribeInstances"
+    const version = "2017-03-12"
+    //const timestamp = getTime()
+    const timestamp = 1551113065
+    //时间处理, 获取世界时间日期
+    const date = getDate(timestamp)
+
+    // ************* 步骤 1：拼接规范请求串 *************
+    const payload = "{\"Limit\": 1, \"Filters\": [{\"Values\": [\"\\u672a\\u547d\\u540d\"], \"Name\": \"instance-name\"}]}"
+
+    const hashedRequestPayload = getHash(payload);
+    const httpRequestMethod = "POST"
+    const canonicalUri = "/"
+    const canonicalQueryString = ""
+    const canonicalHeaders = "content-type:application/json; charset=utf-8\n"
+        + "host:" + endpoint + "\n"
+        + "x-tc-action:" + action.toLowerCase() + "\n"
+    const signedHeaders = "content-type;host;x-tc-action"
+
+    const canonicalRequest = httpRequestMethod + "\n"
+                         + canonicalUri + "\n"
+                         + canonicalQueryString + "\n"
+                         + canonicalHeaders + "\n"
+                         + signedHeaders + "\n"
+                         + hashedRequestPayload
+    console.log(canonicalRequest)
+
+    // ************* 步骤 2：拼接待签名字符串 *************
+    const algorithm = "TC3-HMAC-SHA256"
+    const hashedCanonicalRequest = getHash(canonicalRequest);
+    const credentialScope = date + "/" + service + "/" + "tc3_request"
+    const stringToSign = algorithm + "\n" +
+                    timestamp + "\n" +
+                    credentialScope + "\n" +
+                    hashedCanonicalRequest
+    console.log(stringToSign)
+
+    // ************* 步骤 3：计算签名 *************
+    const kDate = sha256(date, 'TC3' + SECRET_KEY)
+    const kService = sha256(service, kDate)
+    const kSigning = sha256('tc3_request', kService)
+    const signature = sha256(stringToSign, kSigning, 'hex')
+    console.log(signature)
+
+    // ************* 步骤 4：拼接 Authorization *************
+    const authorization = algorithm + " " +
+                    "Credential=" + SECRET_ID + "/" + credentialScope + ", " +
+                    "SignedHeaders=" + signedHeaders + ", " +
+                    "Signature=" + signature
+    console.log(authorization)
+
+    const curlcmd = 'curl -X POST ' + "https://" + endpoint
+                           + ' -H "Authorization: ' + authorization + '"'
+                           + ' -H "Content-Type: application/json; charset=utf-8"'
+                           + ' -H "Host: ' + endpoint + '"'
+                           + ' -H "X-TC-Action: ' + action + '"'
+                           + ' -H "X-TC-Timestamp: ' + timestamp.toString() + '"'
+                           + ' -H "X-TC-Version: ' + version + '"'
+                           + ' -H "X-TC-Region: ' + region + '"'
+                           + " -d '" + payload + "'"
+    console.log(curlcmd)
+}
+main()
+C++
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <string>
+#include <stdio.h>
+#include <time.h>
+#include <openssl/sha.h>
+#include <openssl/hmac.h>
+
+using namespace std;
+
+string get_data(int64_t &timestamp)
+{
+    string utcDate;
+    char buff[20] = {0};
+    // time_t timenow;
+    struct tm sttime;
+    sttime = *gmtime(&timestamp);
+    strftime(buff, sizeof(buff), "%Y-%m-%d", &sttime);
+    utcDate = string(buff);
+    return utcDate;
+}
+
+string int2str(int64_t n)
+{
+    std::stringstream ss;
+    ss << n;
+    return ss.str();
+}
+
+string sha256Hex(const string &str)
+{
+    char buf[3];
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+    SHA256_Update(&sha256, str.c_str(), str.size());
+    SHA256_Final(hash, &sha256);
+    std::string NewString = "";
+    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+    {
+        snprintf(buf, sizeof(buf), "%02x", hash[i]);
+        NewString = NewString + buf;
+    }
+    return NewString;
+}
+
+string HmacSha256(const string &key, const string &input)
+{
+    unsigned char hash[32];
+
+    HMAC_CTX *h;
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+    HMAC_CTX hmac;
+    HMAC_CTX_init(&hmac);
+    h = &hmac;
+#else
+    h = HMAC_CTX_new();
+#endif
+
+    HMAC_Init_ex(h, &key[0], key.length(), EVP_sha256(), NULL);
+    HMAC_Update(h, ( unsigned char* )&input[0], input.length());
+    unsigned int len = 32;
+    HMAC_Final(h, hash, &len);
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+    HMAC_CTX_cleanup(h);
+#else
+    HMAC_CTX_free(h);
+#endif
+
+    std::stringstream ss;
+    ss << std::setfill('0');
+    for (int i = 0; i < len; i++)
+    {
+        ss  << hash[i];
+    }
+
+    return (ss.str());
+}
+
+string HexEncode(const string &input)
+{
+    static const char* const lut = "0123456789abcdef";
+    size_t len = input.length();
+
+    string output;
+    output.reserve(2 * len);
+    for (size_t i = 0; i < len; ++i)
+    {
+        const unsigned char c = input[i];
+        output.push_back(lut[c >> 4]);
+        output.push_back(lut[c & 15]);
+    }
+    return output;
+}
+
+int main()
+{
+    // 密钥参数
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+    string SECRET_ID = getenv("TENCENTCLOUD_SECRET_ID");
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+    string SECRET_KEY = getenv("TENCENTCLOUD_SECRET_KEY");
+
+    string service = "cvm";
+    string host = "cvm.tencentcloudapi.com";
+    string region = "ap-guangzhou";
+    string action = "DescribeInstances";
+    string version = "2017-03-12";
+    int64_t timestamp = 1551113065;
+    string date = get_data(timestamp);
+
+    // ************* 步骤 1：拼接规范请求串 *************
+    string httpRequestMethod = "POST";
+    string canonicalUri = "/";
+    string canonicalQueryString = "";
+    string lower = action;
+    std::transform(action.begin(), action.end(), lower.begin(), ::tolower);
+    string canonicalHeaders = string("content-type:application/json; charset=utf-8\n")
+            + "host:" + host + "\n"
+            + "x-tc-action:" + lower + "\n";
+    string signedHeaders = "content-type;host;x-tc-action";
+    string payload = "{\"Limit\": 1, \"Filters\": [{\"Values\": [\"\\u672a\\u547d\\u540d\"], \"Name\": \"instance-name\"}]}";
+    string hashedRequestPayload = sha256Hex(payload);
+    string canonicalRequest = httpRequestMethod + "\n"
+            + canonicalUri + "\n"
+            + canonicalQueryString + "\n"
+            + canonicalHeaders + "\n"
+            + signedHeaders + "\n"
+            + hashedRequestPayload;
+    cout << canonicalRequest << endl;
+
+    // ************* 步骤 2：拼接待签名字符串 *************
+    string algorithm = "TC3-HMAC-SHA256";
+    string RequestTimestamp = int2str(timestamp);
+    string credentialScope = date + "/" + service + "/" + "tc3_request";
+    string hashedCanonicalRequest = sha256Hex(canonicalRequest);
+    string stringToSign = algorithm + "\n" + RequestTimestamp + "\n" + credentialScope + "\n" + hashedCanonicalRequest;
+    cout << stringToSign << endl;
+
+    // ************* 步骤 3：计算签名 ***************
+    string kKey = "TC3" + SECRET_KEY;
+    string kDate = HmacSha256(kKey, date);
+    string kService = HmacSha256(kDate, service);
+    string kSigning = HmacSha256(kService, "tc3_request");
+    string signature = HexEncode(HmacSha256(kSigning, stringToSign));
+    cout << signature << endl;
+
+    // ************* 步骤 4：拼接 Authorization *************
+    string authorization = algorithm + " " + "Credential=" + SECRET_ID + "/" + credentialScope + ", "
+            + "SignedHeaders=" + signedHeaders + ", " + "Signature=" + signature;
+    cout << authorization << endl;
+
+    string curlcmd = "curl -X POST https://" + host + "\n"
+                   + " -H \"Authorization: " + authorization + "\"\n"
+                   + " -H \"Content-Type: application/json; charset=utf-8\"" + "\n"
+                   + " -H \"Host: " + host + "\"\n"
+                   + " -H \"X-TC-Action: " + action + "\"\n"
+                   + " -H \"X-TC-Timestamp: " + RequestTimestamp + "\"\n"
+                   + " -H \"X-TC-Version: " + version + "\"\n"
+                   + " -H \"X-TC-Region: " + region + "\"\n"
+                   + " -d '" + payload + "\'";
+    cout << curlcmd << endl;
+    return 0;
+};
+C
+#include <ctype.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdint.h>
+#include <openssl/sha.h>
+#include <openssl/hmac.h>
+
+void get_utc_date(int64_t timestamp, char* utc, int len)
+{
+    // time_t timenow;
+    struct tm sttime;
+    sttime = *gmtime(&timestamp);
+    strftime(utc, len, "%Y-%m-%d", &sttime);
+}
+
+void sha256_hex(const char* str, char* result)
+{
+    char buf[3];
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+    SHA256_Update(&sha256, str, strlen(str));
+    SHA256_Final(hash, &sha256);
+    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+    {
+        snprintf(buf, sizeof(buf), "%02x", hash[i]);
+        strcat(result, buf);
+    }
+}
+
+void hmac_sha256(const char* key, int key_len,
+                 const char* input, int input_len,
+                 unsigned char* output, unsigned int* output_len)
+{
+    HMAC_CTX *h;
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+    HMAC_CTX hmac;
+    HMAC_CTX_init(&hmac);
+    h = &hmac;
+#else
+    h = HMAC_CTX_new();
+#endif
+
+    HMAC_Init_ex(h, key, key_len, EVP_sha256(), NULL);
+    HMAC_Update(h, ( unsigned char* )input, input_len);
+    HMAC_Final(h, output, output_len);
+
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+    HMAC_CTX_cleanup(h);
+#else
+    HMAC_CTX_free(h);
+#endif
+
+}
+
+void hex_encode(const char* input, int input_len, char* output)
+{
+    static const char* const lut = "0123456789abcdef";
+
+    char add_out[128] = {0};
+    char temp[2] = {0};
+    for (size_t i = 0; i < input_len; ++i)
+    {
+        const unsigned char c = input[i];
+        temp[0] = lut[c >> 4];
+        strcat(add_out, temp);
+        temp[0] = lut[c & 15];
+        strcat(add_out, temp);
+    }
+    strncpy(output, add_out, 128);
+}
+
+void lowercase(const char * src, char * dst)
+{
+    for (int i = 0; src[i]; i++)
+    {
+        dst[i] = tolower(src[i]);
+    }
+}
+
+int main()
+{
+    // 密钥参数
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_ID，值为示例的 AKID********************************
+    const char* SECRET_ID = getenv("TENCENTCLOUD_SECRET_ID");
+    // 需要设置环境变量 TENCENTCLOUD_SECRET_KEY，值为示例的 ********************************
+    const char* SECRET_KEY = getenv("TENCENTCLOUD_SECRET_KEY");
+    const char* service = "cvm";
+    const char* host = "cvm.tencentcloudapi.com";
+    const char* region = "ap-guangzhou";
+    const char* action = "DescribeInstances";
+    const char* version = "2017-03-12";
+    int64_t timestamp = 1551113065;
+    char date[20] = {0};
+    get_utc_date(timestamp, date, sizeof(date));
+
+    // ************* 步骤 1：拼接规范请求串 *************
+    const char* http_request_method = "POST";
+    const char* canonical_uri = "/";
+    const char* canonical_query_string = "";
+    char canonical_headers[100] = {"content-type:application/json; charset=utf-8\nhost:"};
+    strcat(canonical_headers, host);
+    strcat(canonical_headers, "\nx-tc-action:");
+    char value[100] = {0};
+    lowercase(action, value);
+    strcat(canonical_headers, value);
+    strcat(canonical_headers, "\n");
+    const char* signed_headers = "content-type;host;x-tc-action";
+    const char* payload = "{\"Limit\": 1, \"Filters\": [{\"Values\": [\"\\u672a\\u547d\\u540d\"], \"Name\": \"instance-name\"}]}";
+    char hashed_request_payload[100] = {0};
+    sha256_hex(payload, hashed_request_payload);
+
+    char canonical_request[256] = {0};
+    sprintf(canonical_request, "%s\n%s\n%s\n%s\n%s\n%s", http_request_method,
+            canonical_uri, canonical_query_string, canonical_headers,
+            signed_headers, hashed_request_payload);
+    printf("%s\n", canonical_request);
+
+
+    // ************* 步骤 2：拼接待签名字符串 *************
+    const char*  algorithm = "TC3-HMAC-SHA256";
+    char request_timestamp[16] = {0};
+    sprintf(request_timestamp, "%d", timestamp);
+    char credential_scope[64] = {0};
+    strcat(credential_scope, date);
+    sprintf(credential_scope, "%s/%s/tc3_request", date, service);
+    char hashed_canonical_request[100] = {0};
+    sha256_hex(canonical_request, hashed_canonical_request);
+    char string_to_sign[256] = {0};
+    sprintf(string_to_sign, "%s\n%s\n%s\n%s", algorithm, request_timestamp,
+            credential_scope, hashed_canonical_request);
+    printf("%s\n", string_to_sign);
+
+    // ************* 步骤 3：计算签名 ***************
+    char k_key[64] = {0};
+    sprintf(k_key, "%s%s", "TC3", SECRET_KEY);
+    unsigned char k_date[64] = {0};
+    unsigned int output_len = 0;
+    hmac_sha256(k_key, strlen(k_key), date, strlen(date), k_date, &output_len);
+    unsigned char k_service[64] = {0};
+    hmac_sha256(k_date, output_len, service, strlen(service), k_service, &output_len);
+    unsigned char k_signing[64] = {0};
+    hmac_sha256(k_service, output_len, "tc3_request", strlen("tc3_request"), k_signing, &output_len);
+    unsigned char k_hmac_sha_sign[64] = {0};
+    hmac_sha256(k_signing, output_len, string_to_sign, strlen(string_to_sign), k_hmac_sha_sign, &output_len);
+
+    char signature[128] = {0};
+    hex_encode(k_hmac_sha_sign, output_len, signature);
+    printf("%s\n", signature);
+
+    // ************* 步骤 4：拼接 Authorization *************
+    char authorization[512] = {0};
+    sprintf(authorization, "%s Credential=%s/%s, SignedHeaders=%s, Signature=%s",
+            algorithm, SECRET_ID, credential_scope, signed_headers, signature);
+    printf("%s\n", authorization);
+
+    char curlcmd[10240] = {0};
+    sprintf(curlcmd, "curl -X POST https://%s\n \
+            -H \"Authorization: %s\"\n \
+            -H \"Content-Type: application/json; charset=utf-8\"\n \
+            -H \"Host: %s\"\n \
+            -H \"X-TC-Action: %s\"\n \
+            -H \"X-TC-Timestamp: %s\"\n \
+            -H \"X-TC-Version: %s\"\n \
+            -H \"X-TC-Region: %s\"\n \
+            -d \'%s\'",
+            host, authorization, host, action, request_timestamp, version, region, payload);
+    printf("%s\n", curlcmd);
+    return 0;
+}
+
+
+返回结果
+最近更新时间：2024-03-11 15:37:39
+
+我的收藏
+本页目录：
+正确返回结果
+错误返回结果
+公共错误码
+云 API 3.0 接口默认返回 JSON 数据，返回非 JSON 格式的接口会在文档中做出说明。返回 JSON 数据时最大限制为 50 MB，如果返回的数据超过最大限制，请求会失败并返回内部错误。请根据接口文档中给出的过滤功能（例如时间范围）或者分页功能，控制返回数据不要过大。
+
+注意：目前只要请求被服务端正常处理了，响应的 HTTP 状态码均为200。例如返回的消息体里的错误码是签名失败，但 HTTP 状态码是200，而不是401。
+
+正确返回结果
+以云服务器的接口查看实例状态列表 (DescribeInstancesStatus) 2017-03-12 版本为例，若调用成功，其可能的返回如下为：
+
+    {
+        "Response": {
+            "TotalCount": 0,
+            "InstanceStatusSet": [],
+            "RequestId": "b5b41468-520d-4192-b42f-595cc34b6c1c"
+        }
+    }
+Response 及其内部的 RequestId 是固定的字段，无论请求成功与否，只要 API 处理了，则必定会返回。
+RequestId 用于一个 API 请求的唯一标识，如果 API 出现异常，可以联系 腾讯云客服 或 提交工单，并提供该 ID 来解决问题。
+除了固定的字段外，其余均为具体接口定义的字段，不同的接口所返回的字段参见接口文档中的定义。此例中的 TotalCount 和 InstanceStatusSet 均为 DescribeInstancesStatus 接口定义的字段，由于调用请求的用户暂时还没有云服务器实例，因此 TotalCount 在此情况下的返回值为 0， InstanceStatusSet 列表为空。
+错误返回结果
+若调用失败，其返回值示例如下为：
+
+    {
+        "Response": {
+            "Error": {
+                "Code": "AuthFailure.SignatureFailure",
+                "Message": "The provided credentials could not be validated. Please check your signature is correct."
+            },
+            "RequestId": "ed93f3cb-f35e-473f-b9f3-0d451b8b79c6"
+        }
+    }
+Error 的出现代表着该请求调用失败。Error 字段连同其内部的 Code 和 Message 字段在调用失败时是必定返回的。
+Code 表示具体出错的错误码，当请求出错时可以先根据该错误码在公共错误码和当前接口对应的错误码列表里面查找对应原因和解决方案。
+Message 显示出了这个错误发生的具体原因，随着业务发展或体验优化，此文本可能会经常保持变更或更新，用户不应依赖这个返回值。
+RequestId 用于一个 API 请求的唯一标识，如果 API 出现异常，可以联系 腾讯云客服 或 提交工单，并提供该 ID 来解决问题。
+公共错误码
+返回结果中如果存在 Error 字段，则表示调用 API 接口失败。 Error 中的 Code 字段表示错误码，所有业务都可能出现的错误码为公共错误码。
+参数类型
+最近更新时间：2023-11-23 11:01:24
+
+我的收藏
+目前腾讯云 API 3.0 输入参数和输出参数支持如下几种数据格式：
+
+String: 字符串。
+Integer：整型，上限为无符号64位整数。SDK 3.0 不同编程语言支持的类型有所差异，建议以所使用编程语言的最大整型定义，例如 Golang 的 uint64。
+Boolean：布尔型。
+Float：浮点型。
+Double：双精度浮点型。
+Date：字符串，日期格式。例如：2022-01-01。
+Timestamp：字符串，时间格式。例如：2022-01-01 00:00:00。
+Timestamp ISO8601：ISO 8601 是由国际标准化组织（International Organization for Standardization，ISO）发布的关于日期和时间格式的国际标准，对应国标 《GB/T 7408-2005数据元和交换格式信息交换日期和时间表示法》。建议以所使用编程语言的标准库进行格式解析。例如：2022-01-01T00:00:00+08:00。
+Binary：二进制内容，需要以特定协议请求和解析。

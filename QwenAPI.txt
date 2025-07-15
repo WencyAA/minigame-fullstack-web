@@ -1,0 +1,136 @@
+本文档以通义千问模型的部署为例进行说明，使用 API（HTTP）调用方式帮助您使用阿里云百炼提供的模型部署功能。
+
+前提条件
+您已经完整阅读了模型部署，熟悉如何在阿里云百炼平台进行模型部署的支持的模型和基本步骤。
+
+您需要已获取API Key并配置API Key到环境变量。
+
+1. 部署模型
+重要
+执行以下部署命令后，即便您还没有调用模型，模型部署服务仍将立即开始计费。建议您先确认服务计费规则，再执行部署命令。
+
+下面的命令使用已经调优好的自定义模型qwen-7b-chat_202409181505_58e13480，创建一个专属服务qwen-plus-5790cf81，使用8个算力单元：
+
+ 
+curl "https://dashscope.aliyuncs.com/api/v1/deployments" \
+--header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+--header 'Content-Type: application/json' \
+--data '{        
+    "model_name": "qwen-7b-chat_202409101516_97cda230",
+    "capacity": 2
+}'
+命令执行成功后，返回如下结果：
+
+ 
+{
+  "request_id": "45c5f453-f972-4831-a4cf-0c0213d0c123",
+  "output": {
+    "deployed_model": "qwen-plus-5790cf81",
+    "gmt_create": "2025-06-17T16:20:10.1",
+    "gmt_modified": "2025-06-17T16:20:10.1",
+    "status": "PENDING",
+    "model_name": "qwen-plus",
+    "base_model": "qwen-plus",
+    "base_capacity": 8,
+    "capacity": 8,
+    "ready_capacity": 0,
+    "workspace_id": "llm-v71tlv3***",
+    "charge_type": "post_paid",
+    "creator": "17580541***",
+    "modifier": "17580541***"
+  }
+}
+其中deployed_model为专属服务的唯一ID。
+
+2. 查询服务状态
+通过以下命令查询指定专属服务的详细信息：
+
+ 
+curl "https://dashscope.aliyuncs.com/api/v1/deployments/qwen-plus-5790cf81" \
+    --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+    --header 'Content-Type: application/json' 
+命令执行成功后，返回如下结果：
+
+ 
+{
+  "request_id": "7efdd3a7-a90d-96c6-b477-70055d59edf7",
+  "output": {
+    "page_no": 1,
+    "page_size": 10,
+    "total": 1,
+    "deployments": [
+      {
+        "deployed_model": "qwen-plus-5790cf81",
+        "gmt_create": "2025-06-17T11:00:38",
+        "gmt_modified": "2025-06-17T11:06:13",
+        "status": "RUNNING",
+        "model_name": "qwen-plus",
+        "base_model": "qwen-plus",
+        "base_capacity": 8,
+        "capacity": 8,
+        "ready_capacity": 8,
+        "workspace_id": "llm-v71tlv3***",
+        "charge_type": "post_paid",
+        "creator": "1758054***",
+        "modifier": "1758054***",
+        "plan": "cu"
+      }
+    ]
+  }
+}
+当服务状态为RUNNING时，服务部署完成。
+
+3. 执行推理请求
+通过SDK对专属服务发起请求：
+
+ 
+from dashscope import Generation
+from http import HTTPStatus
+
+response = Generation.call(
+    model='qwen-plus-5790cf81',
+    prompt='你是谁？'
+)
+
+if response.status_code == HTTPStatus.OK:
+    print(response.output)
+    print(response.usage)
+else:
+    print(response.code)
+    print(response.message)
+说明
+执行推理请求使用的API-KEY需要与创建服务使用的API-KEY相同，或归属于相同的阿里云账号。若首次使用DashScope SDK，请参考安装SDK，获取API Key。
+
+代码执行成功后，返回如下结果：
+
+ 
+{"text": "我是Qwen，由阿里云开发的超大规模语言模型。我被设计用于生成各种类型的文本，如文章、故事、诗歌等，并能根据不同的场景和需求进行对话、解答问题、提供信息和帮助等。很高兴为您服务！如果您有任何问题或需要帮助，请随时告诉我。", "finish_reason": "stop", "choices": null}
+{"input_tokens": 11, "output_tokens": 63, "total_tokens": 74}
+4. 删除专属服务
+警告
+执行以下删除命令后，模型部署服务将立即开始下线，您将无法继续使用部署服务。下线后，部署服务将停止计费。
+
+不再使用的专属服务，可以通过下面的命令删除：
+
+ 
+curl --request DELETE 'https://dashscope.aliyuncs.com/api/v1/deployments/qwen-plus-5790cf81' \
+    --header "Authorization: Bearer $DASHSCOPE_API_KEY" \
+    --header 'Content-Type: application/json' 
+命令执行成功后，返回以下结果：
+
+ 
+{
+    "request_id":"4bb4d869-bb24-9439-8fb2-e67231228144",
+    "output":{
+        "deployed_model":"qwen-plus-5790cf81",
+        "status":"DELETING",
+        "model_name":"qwen-plus",
+        "capacity":8
+    }
+}
+API参考
+详细API调用请参考API详情。
+
+
+
+

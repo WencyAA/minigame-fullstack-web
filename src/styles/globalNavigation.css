@@ -1,0 +1,30 @@
+/* globalNavigation.css */
+
+/* 全局导航栏样式 */
+.global-navigation {
+  display: flex;
+  justify-content: center;    /* 水平居中对齐按钮 */
+  gap: 20px;                   /* 按钮之间的间距 */
+  margin-top: 20px;            /* 导航栏与页面顶部主标题之间的间距 */
+  margin-bottom: 30px;         /* 导航栏与内容之间的间距 */
+}
+
+.global-navigation button {
+  background-color: #007bff;  /* 蓝色背景 */
+  color: white;               /* 白色字体 */
+  font-size: 1.1rem;          /* 字体大小 */
+  padding: 15px 30px;         /* 按钮内边距 */
+  border: none;
+  border-radius: 8px;         /* 圆角按钮 */
+  cursor: pointer;            /* 鼠标悬停时显示为手型 */
+  transition: background-color 0.3s ease; /* 按钮点击时背景色的过渡效果 */
+}
+
+.global-navigation button:hover {
+  background-color: #0056b3;  /* 鼠标悬停时的背景颜色变化 */
+}
+
+.global-navigation button:focus {
+  outline: none;              /* 聚焦时移除默认的边框 */
+  box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.6); /* 聚焦时的蓝色边框 */
+}
