@@ -2,12 +2,24 @@
 // src/api/api.js
 import axios from 'axios'; // 使用 import 导入 axios
 
+
+// 从环境变量中获取后端API的URL
+// 如果环境变量未定义（例如在本地开发时），则使用 'http://localhost:5000/api'
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000/api';
+
+
 // 创建 axios 实例，设置基础 URL 和默认配置
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+// // 创建 axios 实例，设置基础 URL 和默认配置  本地的话恢复17-22，去掉11-16，去掉6-8
+// const api = axios.create({
+//   baseURL: 'http://localhost:5000/api',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
   // 添加跨域支持
   withCredentials: false,
 });
